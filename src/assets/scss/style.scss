@@ -80,3 +80,91 @@ header {
         }
     }
 }
+
+@font-face {
+        font-family: MatSaleh;
+        src: url(../fonts/MatSaleh.ttf) format('truetype');
+      }
+
+.MatSaleh{
+    font-family: MatSaleh;
+    font-size: 45px;
+    color: #F39746;
+}
+
+.hero-poonya1{
+    padding-top: 200px;
+     padding-bottom: 30px;
+}
+
+.start-photo{
+    font-family: MatSaleh;
+    font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1px;
+  display: inline-block;
+ padding: 10px 30px;
+  border-radius: 16px;
+  transition: 0.5s;
+
+  color: #fff;
+  background: transparent;
+  border: 4px solid #F39746;
+}
+
+
+
+.booking-photo{
+    font-family: MatSaleh;
+   font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 16px;
+  transition: 0.5s;
+  
+  color: #fff;
+  background: transparent;
+  border: 4px solid #F39746;
+}
+
+
+input[type=text] {
+    font-family: MatSaleh;
+    width: 52%;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    font-size: 17px;
+    color: white;
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 10px 12px 10px;
+    outline: none;
+    
+  }
+  
+  ::placeholder{
+    color: white;
+  }
+
+  .redeemCode{
+    font-family: MatSaleh;
+   font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 5px 30px;
+  border-radius: 16px;
+  transition: 0.5s;
+  
+  color: #fff;
+  background: #F39746;
+  border: 4px solid #F39746;
+}
+ 
+
+
+
