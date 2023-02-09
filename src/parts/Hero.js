@@ -24,7 +24,7 @@ export default function Hero(props) {
         <div className="col-auto pr-5" style={{ width: 500 }}>
           <h1 className="h2 line-height-1 mb-3 MatSaleh hero-poonya1" >
             Here, <div style={{color:'white'}}>
-               is all about fun 
+               it's all about fun 
             </div>
           </h1>
          
