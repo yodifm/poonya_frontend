@@ -1,34 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Axios from "axios";
 
 import "assets/scss/Records.scss";
-
+  
 export default function Record(props) {
-	Axios.get("https://express.studiopoonya.com/payment")
-	.then((res) => {
-	  console.log(res);
-	})
-	.catch((error) => {
-	  console.log("error");
-	});
+  const [listTransaction, setListTransaction] = useState([])
+  const [totalSales, setTotalSales] = useState([])
+  
+  const getData = async () => {
+    const response = await Axios.get(
+      `https://express.studiopoonya.com/payment/status/completed`
+    );
+    console.log(response)
+  };
+  console.log("getData", getData)
+  
 
-	const PaymentAll = () => {
-		Axios.get("https://express.studiopoonya.com/payment")
-	.then((res) => {
-	  console.log(res);
-	})
-	.catch((error) => {
-	  console.log("error");
-	});
-	  };
 
-  return (
+  Axios.get("https://express.studiopoonya.com/payment")
+  .then((res) => {
+    // console.log(res);
+     setListTransaction(res.data)
+  })
+  .catch((error) => {
+    console.log("error");
+  });
+
+  // Axios.get("https://express.studiopoonya.com/payment/status/completed")
+  // .then((res2) => {
+  //   // console.log(res2);
+  //    setTotalSales(res2.data)
+
+  // })
+  // .catch((error) => {
+  //   console.log("error");
+  // });
+
+  return ( 
     <div>
+    {console.log(listTransaction.length)}
       <section id="sidebar">
         <a href="#" className="brand">
           <i className="bx bxs-smile"></i>
-          <span className="text">AdminHub</span>
-        </a>
+          <span className="text">Poonya Admin</span>
+          
+          {/* {console.log(res)} */}
+          
+        </a>  
         <ul className="side-menu top">
           <li className="active">
             <a href="./Dashboard">
@@ -40,6 +58,7 @@ export default function Record(props) {
             <a href="./Generate">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Generate Code</span>
+         
             </a>
           </li>
         </ul>
@@ -56,26 +75,26 @@ export default function Record(props) {
       <section id="content">
         <nav>
           <i className="bx bx-menu"></i>
-          <a href="#" className="nav-link">
+          {/* <a href="#" className="nav-link">
             Categories
-          </a>
-          <form action="#">
+          </a> */}
+          {/* <form action="#">
             <div className="form-input">
               <input type="search" placeholder="Search..." />
               <button type="submit" className="search-btn">
                 <i className="bx bx-search"></i>
               </button>
             </div>
-          </form>
-          <input type="checkbox" id="switch-mode" hidden />
-          {/* <label for="switch-mode" className="switch-mode"></label> */}
+          </form> */}
+          {/* <input type="checkbox" id="switch-mode" hidden />
+          <label for="switch-mode" className="switch-mode"></label>
           <a href="#" className="notification">
             <i className="bx bxs-bell"></i>
             <span className="num">8</span>
           </a>
           <a href="#" className="profile">
             <img src="img/people.png" />
-          </a>
+          </a> */}
         </nav>
 
         <main>
@@ -89,38 +108,38 @@ export default function Record(props) {
                 <li>
                   <i className="bx bx-chevron-right"></i>
                 </li>
-                <li>
+                {/* <li>
                   <a className="active" href="#">
                     Home
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
-            <a href="#" className="btn-download">
+            {/* <a href="#" className="btn-download">
               <i className="bx bxs-cloud-download"></i>
               <span className="text">Download PDF</span>
-            </a>
+            </a> */}
           </div>
 
           <ul className="box-info">
             <li>
               <i className="bx bxs-calendar-check"></i>
               <span className="text">
-                <h3>1020</h3>
-                <p>New Order</p>
+                <h3>{listTransaction.length}</h3>
+                <p>Total Order</p>
               </span>
             </li>
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
                 <h3>2834</h3>
-                <p>Visitors</p>
+                <p>Ticket Used</p>
               </span>
             </li>
             <li>
               <i className="bx bxs-dollar-circle"></i>
               <span className="text">
-                <h3>$2543</h3>
+                <h3></h3>
                 <p>Total Sales</p>
               </span>
             </li>
@@ -135,8 +154,9 @@ export default function Record(props) {
               </div>
               <table>
                 <thead>
+
                   <tr>
-                    <th>User</th>
+                    <th>{}</th>
                     <th>Date Order</th>
                     <th>Status</th>
                   </tr>
@@ -195,7 +215,7 @@ export default function Record(props) {
                 </tbody>
               </table>
             </div>
-            <div className="todo">
+            {/* <div className="todo">
               <div className="head">
                 <h3>Todos</h3>
                 <i className="bx bx-plus"></i>
@@ -223,7 +243,7 @@ export default function Record(props) {
                   <i className="bx bx-dots-vertical-rounded"></i>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </main>
       </section>

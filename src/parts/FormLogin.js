@@ -29,10 +29,10 @@ export default function FormLogin(props) {
           history.push("Dashboard");
           history.go(0);
         } else {
-          console.log("password salah");
+          alert("wrong password, please try again")
         }
       } else {
-        console.log("you are not admin");
+       alert("you are not admin");
       }
       console.log(res.data);
     });
@@ -41,7 +41,9 @@ export default function FormLogin(props) {
   };
 
   return (
+    
     <div className="wrapper">
+      
       <form className="form-signin">
         <h2 className="form-signin-heading">Admin Poonya</h2>
         <input
@@ -68,7 +70,9 @@ export default function FormLogin(props) {
         >
           Login
         </button>
+       
       </form>
+      
     </div>
   );
 }
