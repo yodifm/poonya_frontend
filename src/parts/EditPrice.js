@@ -3,11 +3,13 @@ import Axios from "axios";
 
 import "assets/scss/Records.scss";
   
-export default function Record(props) {
+export default function TestCode(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
   const [totalTicketUsed, setTotalTicketUsed] = useState()
+  const [inputEditPrice, setInputEditPrice] = useState()
+  const [currentPrice, setCurrentPrice] = useState([])
 
   function convertToRupiah(angka) {
     var rupiah = '';
@@ -50,6 +52,18 @@ export default function Record(props) {
       console.log("error");
     });
 
+  Axios.get("https://express.studiopoonya.com/setting/price")
+    .then((res) => {
+      // console.log(res);
+    //   console.log(res.data)
+      setCurrentPrice(res.data)
+      // console.log(res.data)
+    //   setTotalTransaction(res.data.length)
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+
   
 
   Axios.get("https://express.studiopoonya.com/payment/status/completed")
@@ -79,6 +93,19 @@ export default function Record(props) {
       });
   };
 
+  const EditPrice = () => {
+   
+    Axios.get(`https://express.studiopoonya.com/setting/price/update/${inputEditPrice}`)
+      .then((res) => {
+        console.log(res);
+        alert("sukses")
+        })
+      .catch((error) => {
+        console.log("error");
+        alert("gagal")
+      });
+  };
+
  
 
 
@@ -93,19 +120,19 @@ export default function Record(props) {
           <span className="text">Poonya Admin</span>
         </a>  
         <ul className="side-menu top">
-          <li className="active">
+          <li>
             <a href="./Dashboard">
               <i className="bx bxs-dashboard"></i>
               <span className="text">Dashboard</span>
             </a>
           </li>
-          <li>
+          <li >
             <a href="./Generate">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Generate Code</span>
             </a>
           </li>
-          <li>
+          <li className="active">
             <a href="./EditPrice">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Edit Price</span>
@@ -113,7 +140,7 @@ export default function Record(props) {
           </li>
         </ul>
         <ul className="side-menu">
-          <li>
+        <li>
             <a href="./LoginPage" className="logout">
               <i className="bx bxs-log-out-circle"></i>
               <span className="text">Logout</span>
@@ -150,10 +177,10 @@ export default function Record(props) {
         <main>
           <div className="head-title">
             <div className="left">
-              <h1>Dashboard</h1>
+              <h1>Edit Price</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Dashboard</a>
+                  <a href="#">Edit Price </a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -170,7 +197,32 @@ export default function Record(props) {
               <span className="text">Download PDF</span>
             </a> */}
           </div>
-          <ul className="box-info">
+          <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Input Pricing"
+            id="copyText"
+            onChange={(e) => setInputEditPrice(e.target.value)}
+           
+          />
+          {/* <div className="input-group-append">
+            <span className="input-group-text" id="copyBtn">
+              Copy Text
+            </span>
+          </div> */}
+          <br />
+        </div>
+        <form>
+        <button
+            onClick={() => EditPrice()}
+            type="button"
+            className="btn btn-primary"
+          >
+            Submit
+          </button>
+          </form>
+          {/* <ul className="box-info">
           <a href="Dashboard">
             <li>
               <i className="bx bxs-calendar-check"></i>
@@ -184,8 +236,8 @@ export default function Record(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-                <h3>0</h3>
-                <p>Booking Used</p>
+                <h3>{totalTransaction}</h3>
+                <p>Ticket Used</p>
               </span>
             </li>
             </a>
@@ -198,97 +250,43 @@ export default function Record(props) {
               </span>
             </li>
             </a>
-          </ul>
+          </ul> */}
 
           <div className="table-data">
             <div className="order">
               <div className="head">
-                <h3>Recent Orders</h3>
+                <h3>Recent Pricing</h3>
                 <i className="bx bx-search"></i>
                 <i className="bx bx-filter"></i>
               </div>
               <table>
                 <thead>
                   <tr>
-                    <th>Transaction Number</th>
-                    <th>Date Order</th>
-                    <th>Status</th>
+                    <th>User</th>
+                    <th>Current Price</th>
+                    <th>Date Changed</th>
+    
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    listTransaction.map(item => {
-                      if (item.pay_status == "Completed") {
-                        return (
-                          <tr key={item.transaction_number}>
+               
+                <tr key={currentPrice.id}>
                     <td>
-                              <p>{item.transaction_number}</p>
+                              <p>Admin</p>
                     </td>
-                            <td>{formatDateOrder(item.createdAt)}</td>
                     <td>
-                      <span className="status completed">Completed</span>
+                              <p>Rp {currentPrice.value}</p>
                     </td>
-                  </tr>
-                        )
-                      }
-                      else if (item.pay_status == "Pending") {
-                        return (
-                          <tr key={item.transaction_number}>
                             <td>
-                              <p>{item.transaction_number}</p>
-                            </td>
-                            <td>{formatDateOrder(item.createdAt)}</td>
-                            <td>
-                              <span className="status pending">Pending</span>
-                            </td>
-                          </tr>
-                        )
-                      }
-                    }
-                    )
+                                {formatDateOrder(currentPrice.createdAt)}
+                                </td>
+                    
+                  </tr>
+                        
+                
+               
 
-                  }
-
-                  {/* <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status process">Process</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status completed">Completed</span>
-                    </td>
-                  </tr> */}
+                
                 </tbody>
               </table>
             </div>

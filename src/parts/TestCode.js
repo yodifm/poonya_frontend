@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import "assets/scss/Records.scss";
   
-export default function Record(props) {
+export default function TestCode(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
@@ -79,6 +79,23 @@ export default function Record(props) {
       });
   };
 
+  const GenerateTicket = () => {
+    // var data_ticket = {
+    //   quantity: 1,
+    //   ticket_used: true,
+    //   expired: "2023-01-22 08:10:05",
+    //   ticket_username: "testdummy5",
+    //   createdBy: "admin",
+    // };
+    Axios.post("https://express.studiopoonya.com/admin/voucher")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log("error");
+      });
+    };
+
  
 
 
@@ -93,27 +110,21 @@ export default function Record(props) {
           <span className="text">Poonya Admin</span>
         </a>  
         <ul className="side-menu top">
-          <li className="active">
+          <li>
             <a href="./Dashboard">
               <i className="bx bxs-dashboard"></i>
               <span className="text">Dashboard</span>
             </a>
           </li>
-          <li>
+          <li className="active">
             <a href="./Generate">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Generate Code</span>
             </a>
           </li>
-          <li>
-            <a href="./EditPrice">
-              <i className="bx bxs-doughnut-chart"></i>
-              <span className="text">Edit Price</span>
-            </a>
-          </li>
         </ul>
         <ul className="side-menu">
-          <li>
+        <li>
             <a href="./LoginPage" className="logout">
               <i className="bx bxs-log-out-circle"></i>
               <span className="text">Logout</span>
@@ -150,10 +161,10 @@ export default function Record(props) {
         <main>
           <div className="head-title">
             <div className="left">
-              <h1>Dashboard</h1>
+              <h1>Generate Voucher</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Dashboard</a>
+                  <a href="#">Generate </a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -170,7 +181,31 @@ export default function Record(props) {
               <span className="text">Download PDF</span>
             </a> */}
           </div>
-          <ul className="box-info">
+          <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Redeem Code"
+            id="copyText"
+           
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="copyBtn">
+              Copy Text
+            </span>
+          </div>
+          <br />
+        </div>
+        <form>
+        <button
+            onClick={() => GenerateTicket()}
+            type="button"
+            className="btn btn-primary"
+          >
+            Generate Code
+          </button>
+          </form>
+          {/* <ul className="box-info">
           <a href="Dashboard">
             <li>
               <i className="bx bxs-calendar-check"></i>
@@ -184,8 +219,8 @@ export default function Record(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-                <h3>0</h3>
-                <p>Booking Used</p>
+                <h3>{totalTransaction}</h3>
+                <p>Ticket Used</p>
               </span>
             </li>
             </a>
@@ -198,7 +233,7 @@ export default function Record(props) {
               </span>
             </li>
             </a>
-          </ul>
+          </ul> */}
 
           <div className="table-data">
             <div className="order">
@@ -212,32 +247,46 @@ export default function Record(props) {
                   <tr>
                     <th>Transaction Number</th>
                     <th>Date Order</th>
+                    <th>Payment Method</th>
+                    <th>Price</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
                     listTransaction.map(item => {
-                      if (item.pay_status == "Completed") {
+                      if (item.pay_status == "Completed" && item.payment_method == "adminredeem") {
                         return (
                           <tr key={item.transaction_number}>
                     <td>
                               <p>{item.transaction_number}</p>
                     </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
+                    <td>
+                              <p>{item.payment_method}</p>
+                    </td>
+                    <td>
+                              <p>{item.totalprice}</p>
+                    </td>
                     <td>
                       <span className="status completed">Completed</span>
                     </td>
                   </tr>
                         )
                       }
-                      else if (item.pay_status == "Pending") {
+                      else if (item.pay_status == "Pending" && item.payment_method == "adminredeem") {
                         return (
                           <tr key={item.transaction_number}>
                             <td>
                               <p>{item.transaction_number}</p>
                             </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
+                            <td>
+                              <p>{item.payment_method}</p>
+                    </td>
+                    <td>
+                              <p>{item.totalprice}</p>
+                    </td>
                             <td>
                               <span className="status pending">Pending</span>
                             </td>
@@ -249,46 +298,7 @@ export default function Record(props) {
 
                   }
 
-                  {/* <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status process">Process</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status pending">Pending</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="img/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td>
-                      <span className="status completed">Completed</span>
-                    </td>
-                  </tr> */}
+                
                 </tbody>
               </table>
             </div>

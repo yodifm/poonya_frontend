@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import "assets/scss/Records.scss";
   
-export default function Record(props) {
+export default function Record_Ticket(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
@@ -153,7 +153,7 @@ export default function Record(props) {
               <h1>Dashboard</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Dashboard</a>
+                  <a href="#">Dashboard Ticket</a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -184,7 +184,7 @@ export default function Record(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-                <h3>0</h3>
+              <h3>0</h3>
                 <p>Booking Used</p>
               </span>
             </li>
@@ -218,7 +218,7 @@ export default function Record(props) {
                 <tbody>
                   {
                     listTransaction.map(item => {
-                      if (item.pay_status == "Completed") {
+                      if (item.pay_status == "Pending" && item.payment_method == "adminredeem") {
                         return (
                           <tr key={item.transaction_number}>
                     <td>
@@ -226,24 +226,24 @@ export default function Record(props) {
                     </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
                     <td>
-                      <span className="status completed">Completed</span>
+                      <span className="status pending">Pending</span>
                     </td>
                   </tr>
                         )
                       }
-                      else if (item.pay_status == "Pending") {
-                        return (
-                          <tr key={item.transaction_number}>
-                            <td>
-                              <p>{item.transaction_number}</p>
-                            </td>
-                            <td>{formatDateOrder(item.createdAt)}</td>
-                            <td>
-                              <span className="status pending">Pending</span>
-                            </td>
-                          </tr>
-                        )
-                      }
+                    //   else if (item.pay_status == "Pending") {
+                    //     return (
+                    //       <tr key={item.transaction_number}>
+                    //         <td>
+                    //           <p>{item.transaction_number}</p>
+                    //         </td>
+                    //         <td>{formatDateOrder(item.createdAt)}</td>
+                    //         <td>
+                    //           <span className="status pending">Pending</span>
+                    //         </td>
+                    //       </tr>
+                    //     )
+                    //   }
                     }
                     )
 

@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import "assets/scss/Records.scss";
   
-export default function Record(props) {
+export default function Record_Sales(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
@@ -43,7 +43,7 @@ export default function Record(props) {
     .then((res) => {
       // console.log(res);
       setListTransaction(res.data)
-      // console.log(res.data)
+    //   console.log(res.data)
       setTotalTransaction(res.data.length)
     })
     .catch((error) => {
@@ -57,9 +57,13 @@ export default function Record(props) {
       // console.log("status", res);
       var sum = 0;
       res.data.forEach(element => {
-        var count;
-        count = parseInt(element.totalprice) * element.quantity
-        sum += count
+        if(element.pay_status == "Completed" && element.payment_method != "adminredeem"  )
+        {
+
+            var count;
+            count = parseInt(element.totalprice) * element.quantity
+            sum += count
+        }
       });
       // console.log(sum)
       var conv = convertToRupiah(sum)
@@ -153,7 +157,7 @@ export default function Record(props) {
               <h1>Dashboard</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Dashboard</a>
+                  <a href="#">Dashboard Sales</a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -184,11 +188,11 @@ export default function Record(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-                <h3>0</h3>
+              <h3>0</h3>
                 <p>Booking Used</p>
               </span>
             </li>
-            </a>
+            </a> 
             <a href="Dashboard_Sales">
             <li>
               <i className="bx bxs-dollar-circle"></i>
@@ -212,38 +216,46 @@ export default function Record(props) {
                   <tr>
                     <th>Transaction Number</th>
                     <th>Date Order</th>
+                    <th>Customer</th>
+                    <th>Price</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
                     listTransaction.map(item => {
-                      if (item.pay_status == "Completed") {
+                      if (item.pay_status == "Completed" && item.payment_method != "adminredeem"  ) {
                         return (
                           <tr key={item.transaction_number}>
                     <td>
                               <p>{item.transaction_number}</p>
                     </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
+                    <td>
+                              <p>{item.payment_method}</p>
+                    </td>
+                    <td>
+                              <p>{item.totalprice}</p>
+                    </td>
                     <td>
                       <span className="status completed">Completed</span>
                     </td>
                   </tr>
                         )
                       }
-                      else if (item.pay_status == "Pending") {
-                        return (
-                          <tr key={item.transaction_number}>
-                            <td>
-                              <p>{item.transaction_number}</p>
-                            </td>
-                            <td>{formatDateOrder(item.createdAt)}</td>
-                            <td>
-                              <span className="status pending">Pending</span>
-                            </td>
-                          </tr>
-                        )
-                      }
+                    //   else if (item.pay_status == "Pending") {
+                    //     return (
+                    //       <tr key={item.transaction_number}>
+                    //         <td>
+                    //           <p>{item.transaction_number}</p>
+                    //         </td>
+                    //         <td>{formatDateOrder(item.createdAt)}</td>
+                    //         <td>
+                    //           <span className="status pending">Pending</span>
+                    //         </td>
+                    //       </tr>
+                    //     )
+                    //   }
                     }
                     )
 

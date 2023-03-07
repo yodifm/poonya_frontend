@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import imageHero from "assets/images/bg.jpg";
 import Axios from 'axios'
@@ -10,14 +10,22 @@ import "../assets/fonts/MatSaleh.otf";
 
 export default function Hero(props) {
   const history = useHistory();
+   const [inputRedeem, setInputRedeem] = useState()
   function showMostPicked() {
     console.log("test")
     var timeOut = 0
     var snap_token_l
+
+
+
+
     Axios.post("https://express.studiopoonya.com/payment")
     .then((res) => {
       snap_token_l = res.data.snapToken
       console.log(res);
+
+
+      
       return (
         window.snap.pay(snap_token_l, {
           onSuccess: function(result){
@@ -48,6 +56,8 @@ export default function Hero(props) {
     .catch((error) => {
       console.log("error");
     });
+
+    
 
     
     
@@ -85,6 +95,45 @@ export default function Hero(props) {
     }
   }, []);
 
+
+const RedeemCode = () => {
+    // var data_ticket = {
+    //   quantity: 1,
+    //   ticket_used: true,
+    //   expired: "2023-01-22 08:10:05",
+    //   ticket_username: "testdummy5",
+    //   createdBy: "admin",
+    // };
+    Axios.get(`https://express.studiopoonya.com/payment/number/${inputRedeem}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data.transaction_number == inputRedeem && res.data.payment_method == "adminredeem" && res.data.pay_status == "Pending") {
+              // history.push('ClickPage')
+              // history.go(0)
+              // alert("success redeem")
+          Axios.put(`http://express.studiopoonya.com/payment/update/status/${res.data.transaction_number}`)
+            .then((result) => {
+              console.log("suksess")
+              // console.log(result);
+              // history.push('ClickPage')
+              // history.go(0)
+            })
+            .catch((error) => {
+              console.log("error");
+            });
+        }
+        else{
+          alert("Code Salah")
+        }
+
+      })
+      .catch((error) => {
+        console.log("error");
+         alert("Code Salah")
+      });
+  };
+
+
   return(
       <div
         style={{
@@ -118,8 +167,8 @@ SshowMostPicke            We provide what you need to enjoy your holiday with fa
               <div>   
 
 
-           <input type="text" placeholder="Do You have Coupon ?" className="codeInput"/>
-                  <button className="btn-get-started redeemCode">Redeem</button>
+           <input type="text"  onChange={(e) => setInputRedeem(e.target.value)} placeholder="Do You have Coupon ?" className="codeInput"/>
+                  <button className="btn-get-started redeemCode"    onClick={() => RedeemCode()}>Redeem</button>
               </div>
             </div>
           </div>
