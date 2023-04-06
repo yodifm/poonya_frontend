@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import "assets/scss/Records.scss";
   
-export default function Record_Ticket(props) {
+export default function Record(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
@@ -43,12 +43,31 @@ export default function Record_Ticket(props) {
     .then((res) => {
       // console.log(res);
       setListTransaction(res.data)
-      // console.log(res.data)
+      console.log(res.data)
       setTotalTransaction(res.data.length)
     })
     .catch((error) => {
       console.log("error");
     });
+
+
+    Axios.get("https://express.studiopoonya.com/payment")
+    .then((res) => {
+      var count = 0;
+      res.data.forEach(element2 => {
+        if(element2.payment_method == "Booking Photo"){
+         count++
+        }
+      })
+      // console.log(res);
+      setTotalTicketUsed(count)
+    //   console.log(res.data)
+      
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+
 
   
 
@@ -57,9 +76,13 @@ export default function Record_Ticket(props) {
       // console.log("status", res);
       var sum = 0;
       res.data.forEach(element => {
-        var count;
-        count = parseInt(element.totalprice) * element.quantity
-        sum += count
+        if(element.pay_status == "Completed" && element.payment_method != "adminredeem"  )
+        {
+
+            var count;
+            count = parseInt(element.totalprice) * element.quantity
+            sum += count
+        }
       });
       // console.log(sum)
       var conv = convertToRupiah(sum)
@@ -153,7 +176,7 @@ export default function Record_Ticket(props) {
               <h1>Dashboard</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Dashboard Ticket</a>
+                  <a href="#">Dashboard</a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -184,7 +207,7 @@ export default function Record_Ticket(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-              <h3>0</h3>
+              <h3>{totalTicketUsed}</h3>
                 <p>Booking Used</p>
               </span>
             </li>
@@ -210,40 +233,61 @@ export default function Record_Ticket(props) {
               <table>
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>Transaction Number</th>
+                    <th>User</th>
+                    <th>Payment Method</th>
                     <th>Date Order</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    listTransaction.map(item => {
-                      if (item.pay_status == "Pending" && item.payment_method == "adminredeem") {
+                     listTransaction.map((item, index)=> {
+                      if (item.pay_status == "Completed" && item.payment_method === "Booking Photo") {
                         return (
                           <tr key={item.transaction_number}>
                     <td>
+                              <p>{index}</p>
+                    </td>
+                    <td>
                               <p>{item.transaction_number}</p>
                     </td>
+                    <td>
+                              <p>{item.username}</p>
+                            </td>
+                            <td>
+                              <p>{item.payment_method}</p>
+                            </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
                     <td>
-                      <span className="status pending">Pending</span>
+                      <span className="status completed">Completed</span>
                     </td>
                   </tr>
                         )
                       }
-                    //   else if (item.pay_status == "Pending") {
-                    //     return (
-                    //       <tr key={item.transaction_number}>
-                    //         <td>
-                    //           <p>{item.transaction_number}</p>
-                    //         </td>
-                    //         <td>{formatDateOrder(item.createdAt)}</td>
-                    //         <td>
-                    //           <span className="status pending">Pending</span>
-                    //         </td>
-                    //       </tr>
-                    //     )
-                    //   }
+                      else if(item.pay_status == "Pending" && item.payment_method == "Booking Photo")  {
+                        return (
+                          <tr key={item.transaction_number}>
+                            <td>
+                              <p>{index+1}</p>
+                            </td>
+                            <td>
+                              <p>{item.transaction_number}</p>
+                            </td>
+                            <td>
+                              <p>{item.username}</p>
+                            </td>
+                            <td>
+                              <p>{item.payment_method}</p>
+                            </td>
+                            <td>{formatDateOrder(item.createdAt)}</td>
+                            <td>
+                              <span className="status pending">Pending</span>
+                            </td>
+                          </tr>
+                        )
+                      }
                     }
                     )
 

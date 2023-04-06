@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import Axios from "axios";
 
 import "assets/scss/Records.scss";
@@ -8,6 +9,10 @@ export default function Record(props) {
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
   const [totalTicketUsed, setTotalTicketUsed] = useState()
+
+  const history = useHistory();
+
+  console.log("dashboard hist", history)
 
   function convertToRupiah(angka) {
     var rupiah = '';
@@ -39,7 +44,19 @@ export default function Record(props) {
     // return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
   }
 
-  Axios.get("https://express.studiopoonya.com/payment")
+  useEffect(() => {
+    const interval = setInterval(()=>{
+      LoadData()
+    }, 30000)
+    return ()=>clearInterval(interval)
+  }, []) 
+
+  useEffect(() => {
+    LoadData()
+  }, []) 
+
+  const LoadData = () => {
+    Axios.get("https://express.studiopoonya.com/payment")
     .then((res) => {
       // console.log(res);
       setListTransaction(res.data)
@@ -50,35 +67,57 @@ export default function Record(props) {
       console.log("error");
     });
 
-  
 
-  Axios.get("https://express.studiopoonya.com/payment/status/completed")
+    
+    Axios.get("https://express.studiopoonya.com/payment")
     .then((res) => {
-      // console.log("status", res);
-      var sum = 0;
-      res.data.forEach(element => {
-        var count;
-        count = parseInt(element.totalprice) * element.quantity
-        sum += count
-      });
-      // console.log(sum)
-      var conv = convertToRupiah(sum)
-      setTotalAmount(conv)
+      var count = 0;
+      res.data.forEach(element2 => {
+        if(element2.payment_method == "Booking Photo"){
+        count++
+        }
+      })
+      // console.log(res);
+      setTotalTicketUsed(count)
+    //   console.log(res.data)
+      
     })
     .catch((error) => {
       console.log("error");
     });
+    
 
-  const PaymentAll = () => {
-    Axios.get("https://express.studiopoonya.com/payment")
+    Axios.get("https://express.studiopoonya.com/payment/status/completed")
       .then((res) => {
-        console.log(res);
+        // console.log("status", res);
+        var sum = 0;
+        res.data.forEach(element => {
+          if(element.pay_status == "Completed" && element.payment_method != "adminredeem"  )
+          {
+
+              var count;
+              count = parseInt(element.totalprice) * element.quantity
+              sum += count
+          }
+        });
+        // console.log(sum)
+        var conv = convertToRupiah(sum)
+        setTotalAmount(conv)
       })
       .catch((error) => {
         console.log("error");
       });
-  };
 
+    const PaymentAll = () => {
+      Axios.get("https://express.studiopoonya.com/payment")
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log("error");
+        });
+    };
+  }
  
 
 
@@ -184,7 +223,7 @@ export default function Record(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-                <h3>0</h3>
+              <h3>{totalTicketUsed}</h3>
                 <p>Booking Used</p>
               </span>
             </li>
@@ -210,20 +249,32 @@ export default function Record(props) {
               <table>
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>Transaction Number</th>
+                    <th>User</th>
+                    <th>Payment Method</th>
                     <th>Date Order</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    listTransaction.map(item => {
+                    listTransaction.map((item, index)=> {
                       if (item.pay_status == "Completed") {
                         return (
                           <tr key={item.transaction_number}>
                     <td>
+                              <p>{index+1}</p>
+                    </td>
+                    <td>
                               <p>{item.transaction_number}</p>
                     </td>
+                    <td>
+                              <p>{item.username}</p>
+                            </td>
+                            <td>
+                              <p>{item.payment_method}</p>
+                            </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
                     <td>
                       <span className="status completed">Completed</span>
@@ -235,7 +286,16 @@ export default function Record(props) {
                         return (
                           <tr key={item.transaction_number}>
                             <td>
+                              <p>{index+1}</p>
+                            </td>
+                            <td>
                               <p>{item.transaction_number}</p>
+                            </td>
+                            <td>
+                              <p>{item.username}</p>
+                            </td>
+                            <td>
+                              <p>{item.payment_method}</p>
                             </td>
                             <td>{formatDateOrder(item.createdAt)}</td>
                             <td>

@@ -11,6 +11,7 @@ export default function TestCode(props) {
   const [inputEditPrice, setInputEditPrice] = useState()
   const [currentPrice, setCurrentPrice] = useState([])
 
+
   function convertToRupiah(angka) {
     var rupiah = '';
     var angkarev = angka.toString().split('').reverse().join('');
@@ -278,7 +279,7 @@ export default function TestCode(props) {
                               <p>Rp {currentPrice.value}</p>
                     </td>
                             <td>
-                                {formatDateOrder(currentPrice.createdAt)}
+                                {formatDateOrder(currentPrice.updatedAt)}
                                 </td>
                     
                   </tr>

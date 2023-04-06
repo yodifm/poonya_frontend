@@ -43,8 +43,26 @@ export default function Record_Sales(props) {
     .then((res) => {
       // console.log(res);
       setListTransaction(res.data)
-    //   console.log(res.data)
+      console.log(res.data)
       setTotalTransaction(res.data.length)
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+
+
+  Axios.get("https://express.studiopoonya.com/payment")
+    .then((res) => {
+      var count = 0;
+      res.data.forEach(element2 => {
+        if(element2.payment_method == "Booking Photo"){
+         count++
+        }
+      })
+      // console.log(res);
+      setTotalTicketUsed(count)
+    //   console.log(res.data)
+      
     })
     .catch((error) => {
       console.log("error");
@@ -188,7 +206,7 @@ export default function Record_Sales(props) {
             <li>
               <i className="bx bxs-group"></i>
               <span className="text">
-              <h3>0</h3>
+              <h3>{totalTicketUsed}</h3>
                 <p>Booking Used</p>
               </span>
             </li>
@@ -214,6 +232,7 @@ export default function Record_Sales(props) {
               <table>
                 <thead>
                   <tr>
+                    <th>No</th>
                     <th>Transaction Number</th>
                     <th>Date Order</th>
                     <th>Customer</th>
@@ -223,10 +242,14 @@ export default function Record_Sales(props) {
                 </thead>
                 <tbody>
                   {
-                    listTransaction.map(item => {
+                    listTransaction.map((item, index)=> {
                       if (item.pay_status == "Completed" && item.payment_method != "adminredeem"  ) {
                         return (
                           <tr key={item.transaction_number}>
+                    
+                    <td>
+                              <p>{index}</p>
+                    </td>
                     <td>
                               <p>{item.transaction_number}</p>
                     </td>
@@ -242,7 +265,7 @@ export default function Record_Sales(props) {
                     </td>
                   </tr>
                         )
-                      }
+                    }
                     //   else if (item.pay_status == "Pending") {
                     //     return (
                     //       <tr key={item.transaction_number}>

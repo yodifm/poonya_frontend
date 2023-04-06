@@ -4,6 +4,10 @@ import imageHero from "assets/images/bg.jpg";
 import Axios from 'axios'
 import { useHistory } from "react-router-dom";
 
+
+
+
+
 import "../assets/fonts/MatSaleh.otf";
 
 
@@ -11,10 +15,19 @@ import "../assets/fonts/MatSaleh.otf";
 export default function Hero(props) {
   const history = useHistory();
    const [inputRedeem, setInputRedeem] = useState()
-  function showMostPicked() {
+  
+  
+ 
+   
+  
+   
+   
+   function showMostPicked() {
     console.log("test")
     var timeOut = 0
     var snap_token_l
+    var paycode
+
 
 
 
@@ -22,15 +35,25 @@ export default function Hero(props) {
     Axios.post("https://express.studiopoonya.com/payment")
     .then((res) => {
       snap_token_l = res.data.snapToken
+      paycode = res.data.response.transaction_number
       console.log(res);
-
-
+      console.log(paycode);
       
       return (
         window.snap.pay(snap_token_l, {
           onSuccess: function(result){
             // alert("success!"); console.log(result);
-            history.push("ClickPage")
+            Axios.put(`http://express.studiopoonya.com/payment/update/status/${paycode}`)
+            .then((resultcode) => {
+             console.log(resultcode)
+             console.log("sukses")
+            //  navigate("https://photo.studiopoonya.com/ClickPage");
+             history.push("ClickPage")
+             history.go(0)
+
+            }) .catch((error) => {
+              console.log("error");
+            });
             // window.addEventListener("click", openDSLR())
           //  console.log(result)
             // document.getElementById('test-button').click()
@@ -67,10 +90,9 @@ export default function Hero(props) {
     
   }
 
-  function pindah(){
-    history.push("ClickPage")
-    //  window.open('http://localhost:1500/api/start?mode=print&password=bP_A6u6sKblbviUR','_blank').focus();
-  }
+  // function pindah(){
+  //   history.push("ClickPage")
+  // }
 
   useEffect(() => {
     // Sandbox  
@@ -115,21 +137,35 @@ const RedeemCode = () => {
             .then((result) => {
               console.log("suksess")
               // console.log(result);
-              // history.push('ClickPage')
-              // history.go(0)
+              history.push('ClickPage')
+              history.go(0)
             })
             .catch((error) => {
               console.log("error");
             });
         }
+        else if(res.data.transaction_number == inputRedeem && res.data.payment_method == "Booking Photo" && res.data.pay_status == "Completed" && res.data.ticket_used == false){
+          Axios.put(`http://express.studiopoonya.com/payment/update/ticketused/${res.data.transaction_number}`)
+          .then((result) => {
+            console.log("suksess")
+            // console.log(result);
+            //coba
+            history.push('ClickPage')
+            history.go(0)
+          })
+          .catch((error) => {
+            console.log("error");
+          });
+        }
         else{
-          alert("Code Salah")
+          alert("Please make sure the payment is completed and the code is correct")
+        
         }
 
       })
       .catch((error) => {
         console.log("error");
-         alert("Code Salah")
+        alert("The code is wrong")
       });
   };
 
@@ -162,7 +198,7 @@ SshowMostPicke            We provide what you need to enjoy your holiday with fa
                 Booking Photo
               </button>{" "} */}
               <br />
-              {/* <button id="test-button" onClick={test}>test buton</button> */}
+              {/* <button id="test-button" onClick={pindah}>test buton</button> */}
               <br />
               <div>   
 

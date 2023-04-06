@@ -1,15 +1,11 @@
-import React, { Component } from 'react'
-
 import Record from 'parts/Record'
 
+import React from 'react'
 
-export default class Dashboard extends Component {
-  render() {
-    return (
-      <>
-     {/* <Header {...this.props}></Header> */}
-     <Record data={Dashboard.hero}></Record>
-      </>
-    )
-  }
+const Dashboard = () => {
+  return (
+    <Record data={Dashboard.hero}/>
+  )
 }
+
+export default Dashboard

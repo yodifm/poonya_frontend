@@ -2,19 +2,21 @@ import React, { Component } from 'react'
 
 import FormLogin from 'parts/FormLogin'
 import * as api from "api/index.js"
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 
 
-export default class LoginPage extends Component {
-  render() {
-
-    // api.getuserbyusername("testdummy5").then(res => {
-    //   console.log(res)
-    // })
+ const LoginPage = () => {
+  const history = useHistory()
+  console.log(localStorage.getItem("access_token"))
+  if(localStorage.getItem("access_token")){
+    history.push('Dashboard')
+    history.go()
+  }else{
     return (
-      <>
-     {/* <Header {...this.props}></Header> */}
-     <FormLogin data={LoginPage.hero}></FormLogin>
-      </>
-    )
+        // <h1>Tdsfds</h1>
+        <FormLogin data={LoginPage.hero}></FormLogin>
+      );
   }
 }
+
+export default LoginPage;

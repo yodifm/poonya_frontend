@@ -23,11 +23,12 @@ export default function FormLogin(props) {
     // var username_data =  form.username
     api.getuserbyusername(form.username).then((res) => {
       console.log(res);
-
       if (res.data.roles === "admin") {
         if (res.data.password === form.password) {
-          history.push("Dashboard");
-          history.go(0);
+          localStorage.setItem('access_token','ghjfjhdfgsfjsdfsdfgj')
+          console.log("dashboard", history)
+          history.push("Dashboard")
+          history.go()
         } else {
           alert("wrong password, please try again")
         }
@@ -35,10 +36,17 @@ export default function FormLogin(props) {
        alert("you are not admin");
       }
       console.log(res.data);
+     
     });
 
     // history.push("/Dashboard")
   };
+
+  function pindah(){
+    history.push("Dashboard")
+    //  window.open('http://localhost:1500/api/start?mode=print&password=bP_A6u6sKblbviUR','_blank').focus();
+  }
+
 
   return (
     
@@ -64,11 +72,18 @@ export default function FormLogin(props) {
           required=""
         />
         <button
-          onClick={() => DashboardPage()}
+          onClick={DashboardPage}
           className="btn btn-lg btn-primary btn-block"
           type="button"
         >
           Login
+        </button>
+        <button
+          onClick={pindah}
+          className="btn btn-lg btn-primary btn-block"
+          type="button"
+        >
+          Langsung Link
         </button>
        
       </form>

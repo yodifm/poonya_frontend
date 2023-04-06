@@ -122,6 +122,12 @@ export default function TestCode(props) {
               <span className="text">Generate Code</span>
             </a>
           </li>
+          <li>
+            <a href="./EditPrice">
+              <i className="bx bxs-doughnut-chart"></i>
+              <span className="text">EditPrice</span>
+            </a>
+          </li>
         </ul>
         <ul className="side-menu">
         <li>
