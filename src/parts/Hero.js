@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import imageHero from "assets/images/bg.jpg";
+import tatacara from "assets/images/tatacara.jpg"
 import Axios from 'axios'
 import { useHistory } from "react-router-dom";
+
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 
@@ -15,10 +19,32 @@ import "../assets/fonts/MatSaleh.otf";
 export default function Hero(props) {
   const history = useHistory();
    const [inputRedeem, setInputRedeem] = useState()
+   const [modalShow, setModalShow] = React.useState(false);
   
   
  
-   
+   function MyVerticallyCenteredModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title id="contained-modal-title-vcenter">
+          Tata Cara Pembayaran
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <center><img src={tatacara} width="400" height="500" /></center>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
   
    
    
@@ -194,17 +220,28 @@ SshowMostPicke            We provide what you need to enjoy your holiday with fa
                 Start Photo
               </button>{" "}
               &nbsp;&nbsp;&nbsp;
+              <>
+                <button className="btn px-3 start-photo" onClick={() => setModalShow(true)}>
+                  Cara Pembayaran
+                </button>
+
+                <MyVerticallyCenteredModal
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+              </>
               {/* <button className="btn px-3 booking-photo" id="book_button" onClick={pindah}>
                 Booking Photo
               </button>{" "} */}
               <br />
-              {/* <button id="test-button" onClick={pindah}>test buton</button> */}
+             
               <br />
               <div>   
 
 
-           <input type="text"  onChange={(e) => setInputRedeem(e.target.value)} placeholder="Do You have Coupon ?" className="codeInput"/>
+           <input type="text"  onChange={(e) => setInputRedeem(e.target.value)} placeholder="Write Your Voucher Here"  className="codeInput"/>
                   <button className="btn-get-started redeemCode"    onClick={() => RedeemCode()}>Redeem</button>
+           
               </div>
             </div>
           </div>

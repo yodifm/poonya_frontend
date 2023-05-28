@@ -13,6 +13,16 @@ const initState = {
   password: "",
 };
 
+function randomString(len, charSet) {
+  charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var randomString = '';
+  for (var i = 0; i < len; i++) {
+      var randomPoz = Math.floor(Math.random() * charSet.length);
+      randomString += charSet.substring(randomPoz,randomPoz+1);
+  }
+  return randomString;
+}
+
 export default function FormLogin(props) {
   const history = useHistory();
   const [form, setForm] = useState(initState);
@@ -25,7 +35,7 @@ export default function FormLogin(props) {
       console.log(res);
       if (res.data.roles === "admin") {
         if (res.data.password === form.password) {
-          localStorage.setItem('access_token','ghjfjhdfgsfjsdfsdfgj')
+          localStorage.setItem('access_token',randomString(10))
           console.log("dashboard", history)
           history.push("Dashboard")
           history.go()

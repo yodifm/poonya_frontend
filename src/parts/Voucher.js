@@ -80,13 +80,13 @@ export default function FormLogin(props) {
               <span className="text">Dashboard</span>
             </a>
           </li>
-          <li className="active">
+          <li>
             <a href="./Generate">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Generate Code</span>
             </a>
           </li>
-          <li>
+          <li className="active">
             <a href="./EditPrice">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Edit Price</span>
@@ -94,7 +94,7 @@ export default function FormLogin(props) {
           </li>  
         </ul>
         <ul className="side-menu">
-          <li>
+          <li >
             <a href="./LoginPage" className="logout">
               <i className="bx bxs-log-out-circle"></i>
               <span className="text">Logout</span>

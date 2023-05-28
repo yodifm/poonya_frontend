@@ -8,6 +8,10 @@ export default function TestCode(props) {
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
   const [totalTicketUsed, setTotalTicketUsed] = useState()
+  const [inputEditPrice, setInputEditPrice] = useState()
+  const [inputEditVoucher, setInputEditVoucher] = useState()
+  const [currentPrice, setCurrentPrice] = useState([])
+
 
   function convertToRupiah(angka) {
     var rupiah = '';
@@ -17,6 +21,7 @@ export default function TestCode(props) {
   }
 
   function formatDateOrder(date) {
+    
     var newdate = new Date(date)
     var getdate = newdate.getDate()
     var getmonth = newdate.getMonth()
@@ -45,6 +50,18 @@ export default function TestCode(props) {
       setListTransaction(res.data)
       // console.log(res.data)
       setTotalTransaction(res.data.length)
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+
+  Axios.get("https://express.studiopoonya.com/setting/price")
+    .then((res) => {
+      // console.log(res);
+    //   console.log(res.data)
+      setCurrentPrice(res.data)
+      // console.log(res.data)
+    //   setTotalTransaction(res.data.length)
     })
     .catch((error) => {
       console.log("error");
@@ -79,22 +96,47 @@ export default function TestCode(props) {
       });
   };
 
-  const GenerateTicket = () => {
-    // var data_ticket = {
-    //   quantity: 1,
-    //   ticket_used: true,
-    //   expired: "2023-01-22 08:10:05",
-    //   ticket_username: "testdummy5",
-    //   createdBy: "admin",
-    // };
-    Axios.post("https://express.studiopoonya.com/admin/voucher")
+  const EditPrice = () => {
+   
+    Axios.get(`https://express.studiopoonya.com/setting/price/update/${inputEditPrice}`)
       .then((res) => {
         console.log(res);
-      })
+        alert("sukses")
+        })
       .catch((error) => {
         console.log("error");
+        alert("gagal")
       });
-    };
+  };
+
+  const EditVoucher = () => {
+
+    var body = {
+      transaction_number : inputEditVoucher,
+      price: inputEditPrice
+    }
+   
+    Axios.post(`https://express.studiopoonya.com/admin/voucher/custom`, body)
+      .then((res) => {
+        console.log(res);
+        alert("sukses")
+        })
+      .catch((error) => {
+        console.log("error");
+        alert("gagal")
+      });
+  };
+
+  Axios.get("https://express.studiopoonya.com/payment")
+  .then((res) => {
+    // console.log(res);
+    setListTransaction(res.data)
+    // console.log(res.data)
+    setTotalTransaction(res.data.length)
+  })
+  .catch((error) => {
+    console.log("error");
+  });
 
  
 
@@ -116,19 +158,19 @@ export default function TestCode(props) {
               <span className="text">Dashboard</span>
             </a>
           </li>
-          <li className="active">
+          <li >
             <a href="./Generate">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Generate Code</span>
             </a>
           </li>
-          <li>
+          <li >
             <a href="./EditPrice">
               <i className="bx bxs-doughnut-chart"></i>
-              <span className="text">EditPrice</span>
+              <span className="text">Edit Price</span>
             </a>
           </li>
-          <li>
+          <li className="active"> 
             <a href="./EditVoucher">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Custom Voucher</span>
@@ -146,37 +188,14 @@ export default function TestCode(props) {
       </section>
 
       <section id="content">
-        <nav>
-          {/* <i className="bx bx-menu"></i>
-          <a href="#" className="nav-link">
-            Categories
-          </a> */}
-          {/* <form action="#">
-            <div className="form-input">
-              <input type="search" placeholder="Search..." />
-              <button type="submit" className="search-btn">
-                <i className="bx bx-search"></i>
-              </button>
-            </div>
-          </form> */}
-          {/* <input type="checkbox" id="switch-mode" hidden />
-          <label for="switch-mode" className="switch-mode"></label>
-          <a href="#" className="notification">
-            <i className="bx bxs-bell"></i>
-            <span className="num">8</span>
-          </a>
-          <a href="#" className="profile">
-            <img src="img/people.png" />
-          </a> */}
-        </nav>
 
         <main>
           <div className="head-title">
             <div className="left">
-              <h1>Generate Voucher</h1>
+              <h1>Custom Voucher</h1>
               <ul className="breadcrumb">
                 <li>
-                  <a href="#">Generate </a>
+                  <a href="#">Custom Voucher </a>
                 </li>
                 <li>
                   <i className="bx bx-chevron-right"></i>
@@ -193,60 +212,42 @@ export default function TestCode(props) {
               <span className="text">Download PDF</span>
             </a> */}
           </div>
+          <h5>Input Voucher Code</h5>
           <div className="input-group mb-3">
           <input
             type="text"
             className="form-control"
-            placeholder="Redeem Code"
+            placeholder="Input Voucher Code"
             id="copyText"
+            onChange={(e) => setInputEditVoucher(e.target.value)}
            
           />
-          <div className="input-group-append">
+          </div>
+          <h5>Input Price</h5>
+          <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Input Price"
+            id="copyText"
+            onChange={(e) => setInputEditPrice(e.target.value)}
+           
+          />
+          </div>
+          {/* <div className="input-group-append">
             <span className="input-group-text" id="copyBtn">
               Copy Text
             </span>
-          </div>
-          <br />
-        </div>
-        <form>
+          </div> */}
+      <form>
         <button
-            onClick={() => GenerateTicket()}
+            onClick={() => EditVoucher()}
             type="button"
             className="btn btn-primary"
           >
-            Generate Code
+            Submit
           </button>
           </form>
-          {/* <ul className="box-info">
-          <a href="Dashboard">
-            <li>
-              <i className="bx bxs-calendar-check"></i>
-              <span className="text">
-                <h3>{totalTransaction}</h3>
-                <p>Total Transaction</p>
-              </span>
-            </li>
-            </a>
-            <a href="Dashboard_Ticket">
-            <li>
-              <i className="bx bxs-group"></i>
-              <span className="text">
-                <h3>{totalTransaction}</h3>
-                <p>Ticket Used</p>
-              </span>
-            </li>
-            </a>
-            <a href="Dashboard_Sales">
-            <li>
-              <i className="bx bxs-dollar-circle"></i>
-              <span className="text">
-                <h3>{totalamount}</h3>
-                <p>Total Sales</p>
-              </span>
-            </li>
-            </a>
-          </ul> */}
-
           <div className="table-data">
             <div className="order">
               <div className="head">

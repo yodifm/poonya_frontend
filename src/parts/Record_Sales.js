@@ -2,12 +2,22 @@ import React, { useState } from "react";
 import Axios from "axios";
 
 import "assets/scss/Records.scss";
+
+
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Paginator } from 'primereact/paginator';
+
+
+        
   
 export default function Record_Sales(props) {
   const [totalamount, setTotalAmount] = useState()
   const [listTransaction, setListTransaction] = useState([])
   const [totalTransaction, setTotalTransaction] = useState()
   const [totalTicketUsed, setTotalTicketUsed] = useState()
+  const [totalBookingUsed, setTotalBookingUsed] = useState()
+  const [totalVoucherUsed, setTotalVoucherUsed] = useState()
 
   function convertToRupiah(angka) {
     var rupiah = '';
@@ -61,6 +71,23 @@ export default function Record_Sales(props) {
       })
       // console.log(res);
       setTotalTicketUsed(count)
+    //   console.log(res.data)
+      
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+
+    Axios.get("https://express.studiopoonya.com/payment")
+    .then((res) => {
+      var count = 0;
+      res.data.forEach(element2 => {
+        if(element2.payment_method == "adminredeem" && element2.pay_status == 'Completed'){
+        count++
+        }
+      })
+      // console.log(res);
+      setTotalVoucherUsed(count)
     //   console.log(res.data)
       
     })
@@ -131,6 +158,12 @@ export default function Record_Sales(props) {
             <a href="./EditPrice">
               <i className="bx bxs-doughnut-chart"></i>
               <span className="text">Edit Price</span>
+            </a>
+          </li>
+          <li>
+            <a href="./EditVoucher">
+              <i className="bx bxs-doughnut-chart"></i>
+              <span className="text">Custom Voucher</span>
             </a>
           </li>
         </ul>
@@ -211,11 +244,20 @@ export default function Record_Sales(props) {
               </span>
             </li>
             </a> 
+            <a href="Dashboard_Ticket">
+            <li>
+              <i className="bx bxs-group"></i>
+              <span className="text">
+              <h3>{totalVoucherUsed}</h3>
+                <p>Voucher Used</p>
+              </span>
+            </li>
+            </a>
             <a href="Dashboard_Sales">
             <li>
               <i className="bx bxs-dollar-circle"></i>
               <span className="text">
-                <h3>{totalamount}</h3>
+              <h3 style={{fontSize:20}}>{totalamount}</h3>
                 <p>Total Sales</p>
               </span>
             </li>
@@ -229,6 +271,7 @@ export default function Record_Sales(props) {
                 <i className="bx bx-search"></i>
                 <i className="bx bx-filter"></i>
               </div>
+
               <table>
                 <thead>
                   <tr>

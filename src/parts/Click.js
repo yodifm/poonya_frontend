@@ -31,7 +31,7 @@ export default function Click(props) {
           height: 750,
           width: 400,
           marginTop:-80, 
-          marginLeft:470
+          marginLeft:300
         }}
       >
               <button className="btn click-photo" style={{marginTop:450, marginLeft:105}} id= "pay-button" hasShadow onClick={openDSLR} >

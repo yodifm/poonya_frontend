@@ -7,6 +7,10 @@ import { useHistory } from "react-router-dom";
 import emailjs from '@emailjs/browser';
 
 import "../assets/fonts/MatSaleh.otf";
+import '../assets/css/booking.css'
+
+import booking from "assets/images/booking.png"
+
 
 export default function Booking(props) {
   const form = useRef()
@@ -131,7 +135,18 @@ export default function Booking(props) {
   }, []);
 
   return (
-    <div className="wrapper">
+    <div>
+     <div class="split left">
+  <div class="centered">
+    <img src={booking} width="400" height="500"/>
+    
+  </div>
+</div>
+
+<div class="split right">
+  <div class="centered">
+    
+  <div className="wrapper">
       <form className="form-signin">
         <h2 className="form-signin-heading">Booking Photo</h2>
         <input 
@@ -155,5 +170,13 @@ export default function Booking(props) {
      
       </form>
     </div>
+  </div>
+</div>
+    </div>
+
+
+
+
+    
   );
 }

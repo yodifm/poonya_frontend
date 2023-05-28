@@ -139,6 +139,12 @@ export default function TestCode(props) {
               <span className="text">Edit Price</span>
             </a>
           </li>
+          <li>
+            <a href="./EditVoucher">
+              <i className="bx bxs-doughnut-chart"></i>
+              <span className="text">Custom Voucher</span>
+            </a>
+          </li>
         </ul>
         <ul className="side-menu">
         <li>

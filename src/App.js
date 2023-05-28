@@ -10,6 +10,7 @@ import ClickPage from 'pages/ClickPage';
 import FormLogin from 'parts/FormLogin';
 import TestCode from 'parts/TestCode';
 import EditPrice from 'parts/EditPrice';
+import EditVoucher from 'parts/EditVoucher';
 import Booking from 'parts/Booking';
 
 
@@ -32,6 +33,7 @@ function App() {
         <Route exact path="/Dashboard_Sales" component={Dashboard_Sales}></Route>
         <Route exact path="/TestCode" component={TestCode}></Route>
         <Route exact path="/EditPrice" component={EditPrice}></Route>
+        <Route exact path="/EditVoucher" component={EditVoucher}></Route>
         <Route exact path="/Booking" component={Booking}></Route>
 
       </Routes>
